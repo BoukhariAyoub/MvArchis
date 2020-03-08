@@ -26,10 +26,6 @@ class FormViewModelTest {
     @InjectMocks
     private lateinit var viewModel: FormViewModel
 
-    @Mock
-    private lateinit var mockFormObserver: Observer<FormFields>
-
-
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
@@ -40,30 +36,16 @@ class FormViewModelTest {
     fun test_on_validateClicked_sets_the_right_user() {
         //GIVEN
         whenever(userApi.setUser(anyObject())).thenAnswer { }
+        viewModel.firstName.set(FIRST_NAME)
+        viewModel.lastName.set(LAST_NAME)
+        viewModel.birthDate.set(BIRTH_DATE)
 
         //WHEN
-        viewModel.onValidateClicked(FIRST_NAME, LAST_NAME, BIRTH_DATE)
+        viewModel.onValidateClicked()
 
         //THEN
         val argumentCaptor = ArgumentCaptor.forClass(User::class.java)
         Mockito.verify(userApi).setUser(capture<User>(argumentCaptor))
-        Assert.assertEquals(mockUser, argumentCaptor.value)
-    }
-
-    @Test
-    fun test_on_form_fields_set() {
-        //GIVEN
-        whenever(userApi.setUser(anyObject())).thenAnswer { }
-
-        //WHEN
-        viewModel.onFormTextChanged(FIRST_NAME, LAST_NAME, BIRTH_DATE)
-        viewModel.formLiveData.observeForever(mockFormObserver)
-
-        //THEN
-        val argumentCaptor = ArgumentCaptor.forClass(FormFields::class.java)
-        Mockito.verify(mockFormObserver).onChanged(capture<FormFields>(argumentCaptor))
-        assertEquals(argumentCaptor.value.firstName, FIRST_NAME)
-        assertEquals(argumentCaptor.value.lastName, LAST_NAME)
-        assertEquals(argumentCaptor.value.birthDate, BIRTH_DATE)
+        assertEquals(mockUser, argumentCaptor.value)
     }
 }

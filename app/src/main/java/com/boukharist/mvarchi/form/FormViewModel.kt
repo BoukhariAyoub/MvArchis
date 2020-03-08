@@ -1,22 +1,24 @@
 package com.boukharist.mvarchi.form
 
+import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.boukharist.mvarchi.FormFields
 import com.boukharist.mvarchi.IUserApi
 import com.boukharist.mvarchi.User
-import com.boukharist.mvarchi.UserApi
 
 class FormViewModel(private val userApi: IUserApi) : ViewModel() {
 
-    val formLiveData = MutableLiveData<FormFields>()
+    val firstName = ObservableField<String>()
+    val lastName = ObservableField<String>()
+    val birthDate = ObservableField<String>()
 
-    fun onFormTextChanged(firstName: String, lastName: String, birthDate: String) {
-        formLiveData.value = FormFields(firstName, lastName, birthDate)
-    }
-
-    fun onValidateClicked(firstName: String, lastName: String, birthDate: String) {
-        val user = User(firstName, lastName, birthDate)
+    fun onValidateClicked() {
+        val user = User(firstName.get()!!, lastName.get()!!, birthDate.get()!!)
         userApi.setUser(user)
     }
 }
+
+
+
+
