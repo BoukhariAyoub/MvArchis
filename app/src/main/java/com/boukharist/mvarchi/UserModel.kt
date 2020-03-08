@@ -1,5 +1,7 @@
 package com.boukharist.mvarchi
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -22,11 +24,11 @@ data class User(
 
 interface IUserApi {
     fun setUser(user: User)
-    fun getUser(): User
+    fun getUser(): LiveData<User>
 }
 
 class UserApi private constructor() : IUserApi {
-    private var user: User = User("Kanye", "West", "11/07/1990")
+    private var user: MutableLiveData<User> = MutableLiveData(User("Kanye", "West", "11/07/1990"))
 
     companion object {
         private var instance: UserApi? = null
@@ -40,7 +42,7 @@ class UserApi private constructor() : IUserApi {
     }
 
     override fun setUser(user: User) {
-        this.user = user
+        this.user.value = user
     }
 
     override fun getUser() = user

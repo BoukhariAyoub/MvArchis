@@ -6,8 +6,9 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <include
-        layout="@layout/info_view"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/infoFragment"
+        android:name="com.boukharist.mvarchi.info.InfoFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline"
@@ -22,8 +23,9 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.5" />
 
-    <include
-        layout="@layout/form_view"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/formFragment"
+        android:name="com.boukharist.mvarchi.form.FormFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"

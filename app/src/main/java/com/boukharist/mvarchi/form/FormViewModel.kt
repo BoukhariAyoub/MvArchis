@@ -1,12 +1,14 @@
-package com.boukharist.mvarchi
+package com.boukharist.mvarchi.form
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import java.time.LocalDateTime
+import com.boukharist.mvarchi.FormFields
+import com.boukharist.mvarchi.IUserApi
+import com.boukharist.mvarchi.User
+import com.boukharist.mvarchi.UserApi
 
-class UserViewModel(private val userApi: IUserApi) : ViewModel() {
+class FormViewModel(private val userApi: IUserApi) : ViewModel() {
 
-    val userLiveData = MutableLiveData<DisplayableUser>()
     val formLiveData = MutableLiveData<FormFields>()
 
     fun onFormTextChanged(firstName: String, lastName: String, birthDate: String) {
@@ -16,13 +18,5 @@ class UserViewModel(private val userApi: IUserApi) : ViewModel() {
     fun onValidateClicked(firstName: String, lastName: String, birthDate: String) {
         val user = User(firstName, lastName, birthDate)
         userApi.setUser(user)
-        fetchData()
-    }
-
-    fun fetchData() {
-        val user = userApi.getUser()
-        val now = LocalDateTime.now()
-        val displayableUser = DisplayableUser(user.getFullName(), user.getAge(now))
-        userLiveData.value = displayableUser
     }
 }

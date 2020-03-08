@@ -1,12 +1,12 @@
-package com.boukharist.mvarchi
+package com.boukharist.mvarchi.form
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.boukharist.mvarchi.UserApi
 
-class UserViewModelFactory :ViewModelProvider.Factory {
-
+class FormViewModelFactory :ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         val userApi = UserApi.getInstance()
-        return UserViewModel(userApi) as T
+        return FormViewModel(userApi) as T
     }
 }
