@@ -25,8 +25,19 @@ interface IUserApi {
     fun getUser(): User
 }
 
-class UserApi : IUserApi {
+class UserApi private constructor() : IUserApi {
     private var user: User = User("Kanye", "West", "11/07/1990")
+
+    companion object {
+        private var instance: UserApi? = null
+
+        fun getInstance(): UserApi {
+            if (instance == null) {
+                instance = UserApi()
+            }
+            return instance!!
+        }
+    }
 
     override fun setUser(user: User) {
         this.user = user

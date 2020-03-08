@@ -4,8 +4,6 @@
 .gitignore,a/5/a5cc2925ca8258af241be7e5b0381edf30266302
 P
  app/src/main/AndroidManifest.xml,8/c/8c55c3ccc257e5907959013f99656e4c8ec3903e
-k
-;app/src/test/java/com/boukharist/mvarchi/ExampleUnitTest.kt,d/b/db6558a1bbb4f52080302ca2dc0eb9f39a9d4426
 <
 build.gradle,f/0/f07866736216be0ee2aba49e392191aeae700a35
 a
@@ -16,8 +14,6 @@ h
 8app/src/main/java/com/boukharist/mvarchi/MainActivity.kt,2/e/2e44a97397df32df15d346659168c4d5fdbaac64
 d
 4app/src/test/java/com/boukharist/mvarchi/UserTest.kt,2/a/2a5c741a703b6491e07585d541bfa77ae38339cb
-e
-5app/src/test/java/com/boukharist/mvarchi/TestUtils.kt,3/3/331902643585c9756a23a274e2d60ac9cf2de0cb
 m
 =app/src/test/java/com/boukharist/mvarchi/UserPresenterTest.kt,e/f/efade873cec8d65b56993ae505f59ddf7db5de40
 @
