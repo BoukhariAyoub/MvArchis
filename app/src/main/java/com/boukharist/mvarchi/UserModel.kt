@@ -6,9 +6,9 @@ import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 
 data class User(
-    private val firstName: String,
-    private val lastName: String,
-    private val birthDate: String
+    val firstName: String,
+    val lastName: String,
+    val birthDate: String
 ) {
 
     fun getAge(now: LocalDateTime): Int {

@@ -28,7 +28,10 @@ class UserViewModelTest {
     private val mockUser = User(FIRST_NAME, LAST_NAME, BIRTH_DATE)
 
     @Mock
-    private lateinit var mockObserver: Observer<DisplayableUser>
+    private lateinit var mockUserObserver: Observer<DisplayableUser>
+
+    @Mock
+    private lateinit var mockFormObserver: Observer<FormFields>
 
 
     @Before
@@ -56,12 +59,26 @@ class UserViewModelTest {
     fun test_on_validateClicked_populate_the_right_data() {
         //WHEN
         viewModel.onValidateClicked(FIRST_NAME, LAST_NAME, BIRTH_DATE)
-        viewModel.userLiveData.observeForever(mockObserver)
+        viewModel.userLiveData.observeForever(mockUserObserver)
 
         //THEN
         val argumentCaptor = ArgumentCaptor.forClass(DisplayableUser::class.java)
-        verify(mockObserver).onChanged(capture<DisplayableUser>(argumentCaptor))
+        verify(mockUserObserver).onChanged(capture<DisplayableUser>(argumentCaptor))
         assertEquals(argumentCaptor.value.fullName, mockUser.getFullName())
         assertEquals(argumentCaptor.value.age, mockUser.getAge(LocalDateTime.now()))
+    }
+
+    @Test
+    fun test_on_form_fields_set() {
+        //WHEN
+        viewModel.onFormTextChanged(FIRST_NAME, LAST_NAME, BIRTH_DATE)
+        viewModel.formLiveData.observeForever(mockFormObserver)
+
+        //THEN
+        val argumentCaptor = ArgumentCaptor.forClass(FormFields::class.java)
+        verify(mockFormObserver).onChanged(capture<FormFields>(argumentCaptor))
+        assertEquals(argumentCaptor.value.firstName, FIRST_NAME)
+        assertEquals(argumentCaptor.value.lastName, LAST_NAME)
+        assertEquals(argumentCaptor.value.birthDate, BIRTH_DATE)
     }
 }

@@ -7,6 +7,11 @@ import java.time.LocalDateTime
 class UserViewModel(private val userApi: IUserApi) : ViewModel() {
 
     val userLiveData = MutableLiveData<DisplayableUser>()
+    val formLiveData = MutableLiveData<FormFields>()
+
+    fun onFormTextChanged(firstName: String, lastName: String, birthDate: String) {
+        formLiveData.value = FormFields(firstName, lastName, birthDate)
+    }
 
     fun onValidateClicked(firstName: String, lastName: String, birthDate: String) {
         val user = User(firstName, lastName, birthDate)
@@ -20,12 +25,4 @@ class UserViewModel(private val userApi: IUserApi) : ViewModel() {
         val displayableUser = DisplayableUser(user.getFullName(), user.getAge(now))
         userLiveData.value = displayableUser
     }
-
-    companion object {
-        fun create(): UserViewModel {
-            val userApi = UserApi.getInstance()
-            return UserViewModel(userApi)
-        }
-    }
-
 }
