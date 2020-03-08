@@ -1,5 +1,5 @@
 package com.boukharist.mvarchi
 
 interface IView {
-    fun populateData()
+    fun populateData(fullName: String, age: Int)
 }
