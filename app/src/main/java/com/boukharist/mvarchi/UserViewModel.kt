@@ -1,10 +1,12 @@
 package com.boukharist.mvarchi
 
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import java.time.LocalDateTime
 
-class UserViewModel(private val userApi: IUserApi) {
+class UserViewModel(private val userApi: IUserApi) : ViewModel() {
 
-    private val userObservable: FieldObservable<DisplayableUser> = FieldObservable()
+    val userLiveData = MutableLiveData<DisplayableUser>()
 
     fun onValidateClicked(firstName: String, lastName: String, birthDate: String) {
         val user = User(firstName, lastName, birthDate)
@@ -15,11 +17,8 @@ class UserViewModel(private val userApi: IUserApi) {
     fun fetchData() {
         val user = userApi.getUser()
         val now = LocalDateTime.now()
-        userObservable.updateValue(DisplayableUser(user.getFullName(), user.getAge(now)))
-    }
-
-    fun getDisplayableUserObservable(): FieldObservable<DisplayableUser> {
-        return userObservable
+        val displayableUser = DisplayableUser(user.getFullName(), user.getAge(now))
+        userLiveData.value = displayableUser
     }
 
     companion object {

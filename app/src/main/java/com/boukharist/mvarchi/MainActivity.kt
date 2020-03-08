@@ -2,14 +2,13 @@ package com.boukharist.mvarchi
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.form_view.*
 import kotlinx.android.synthetic.main.info_view.*
-import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
     private val viewModel: UserViewModel = UserViewModel.create()
-    private lateinit var displayableUserObserver: Observer
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,19 +19,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initObservers() {
-        displayableUserObserver = Observer { observable, _ ->
-            if (observable is FieldObservable<*>) {
-                val user = observable.getValue() as DisplayableUser
-                showAge(user.age)
-                showName(user.fullName)
-            }
-        }
-        viewModel.getDisplayableUserObservable().addObserver(displayableUserObserver)
-    }
-
-    override fun onDestroy() {
-        viewModel.getDisplayableUserObservable().deleteObserver(displayableUserObserver)
-        super.onDestroy()
+        viewModel.userLiveData.observe(this, Observer {
+            showAge(it.age)
+            showName(it.fullName)
+        })
     }
 
     private fun setListeners() {
@@ -51,5 +41,4 @@ class MainActivity : AppCompatActivity() {
     private fun showAge(age: Int) {
         ageTextView.text = getString(R.string.age_placeholder, age)
     }
-
 }

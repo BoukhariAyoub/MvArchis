@@ -1,13 +1,15 @@
 package com.boukharist.mvarchi
 
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.Observer
 import com.nhaarman.mockitokotlin2.capture
 import com.nhaarman.mockitokotlin2.whenever
 import org.junit.Assert.assertEquals
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
+import org.junit.rules.TestRule
 import org.mockito.ArgumentCaptor
-import org.mockito.ArgumentMatchers.anyInt
-import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mock
 import org.mockito.Mockito.verify
 import org.mockito.MockitoAnnotations
@@ -15,12 +17,19 @@ import java.time.LocalDateTime
 
 class UserViewModelTest {
 
+    @get:Rule
+    var rule: TestRule = InstantTaskExecutorRule()
+
     @Mock
     private lateinit var userApi: IUserApi
 
     private lateinit var viewModel: UserViewModel
 
     private val mockUser = User(FIRST_NAME, LAST_NAME, BIRTH_DATE)
+
+    @Mock
+    private lateinit var mockObserver: Observer<DisplayableUser>
+
 
     @Before
     fun setUp() {
@@ -47,10 +56,12 @@ class UserViewModelTest {
     fun test_on_validateClicked_populate_the_right_data() {
         //WHEN
         viewModel.onValidateClicked(FIRST_NAME, LAST_NAME, BIRTH_DATE)
+        viewModel.userLiveData.observeForever(mockObserver)
 
         //THEN
-        val resultDisplayableUser = viewModel.getDisplayableUserObservable().getValue()!!
-        assertEquals(resultDisplayableUser.fullName, mockUser.getFullName())
-        assertEquals(resultDisplayableUser.age, mockUser.getAge(LocalDateTime.now()))
+        val argumentCaptor = ArgumentCaptor.forClass(DisplayableUser::class.java)
+        verify(mockObserver).onChanged(capture<DisplayableUser>(argumentCaptor))
+        assertEquals(argumentCaptor.value.fullName, mockUser.getFullName())
+        assertEquals(argumentCaptor.value.age, mockUser.getAge(LocalDateTime.now()))
     }
 }
