@@ -20,12 +20,18 @@ data class User(
     fun getFullName() = "$firstName $lastName"
 }
 
-class UserApi {
-    private var user: User = User("Kanye", "West", "11/07/1990")
+interface IUserApi {
+    fun setUser(user: User)
+    fun getUser(): User
+}
 
-    fun setUser(user: User) {
+class UserApi : IUserApi {
+    private var user: User =
+        User("Kanye", "West", "11/07/1990")
+
+    override fun setUser(user: User) {
         this.user = user
     }
 
-    fun getUser() = user
+    override fun getUser() = user
 }
