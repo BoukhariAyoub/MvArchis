@@ -2,10 +2,11 @@ package com.boukharist.mvarchi.form
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.boukharist.mvarchi.FormFields
 import com.boukharist.mvarchi.IUserApi
 import com.boukharist.mvarchi.User
-import com.boukharist.mvarchi.UserApi
+import kotlinx.coroutines.launch
 
 class FormViewModel(private val userApi: IUserApi) : ViewModel() {
 

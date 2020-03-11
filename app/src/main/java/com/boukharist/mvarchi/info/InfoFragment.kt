@@ -4,18 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.boukharist.mvarchi.R
-import kotlinx.android.synthetic.main.form_view.*
-import kotlinx.android.synthetic.main.info_view.*
+import com.boukharist.mvarchi.databinding.InfoViewBinding
 
 class InfoFragment : Fragment() {
-
-    companion object {
-        fun newInstance() = InfoFragment()
-    }
 
     private lateinit var viewModel: InfoViewModel
 
@@ -23,30 +18,22 @@ class InfoFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.info_view, container, false)
+        viewModel = ViewModelProvider(this, InfoViewModelFactory()).get(InfoViewModel::class.java)
+        return DataBindingUtil.inflate<InfoViewBinding>(
+            inflater,
+            R.layout.info_view,
+            container,
+            false
+        )
+            .also {
+                it.viewModel = viewModel
+                it.lifecycleOwner = viewLifecycleOwner
+            }
+            .root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this, InfoViewModelFactory()).get(InfoViewModel::class.java)
-        initObservers()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         viewModel.fetchData()
     }
-
-    private fun initObservers() {
-        viewModel.userLiveData.observe(viewLifecycleOwner, Observer {
-            showAge(it.age)
-            showName(it.fullName)
-        })
-    }
-
-
-    private fun showName(fullName: String) {
-        nameTextView.text = getString(R.string.full_name_placeholder, fullName)
-    }
-
-    private fun showAge(age: Int) {
-        ageTextView.text = getString(R.string.age_placeholder, age)
-    }
-
 }

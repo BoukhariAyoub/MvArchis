@@ -1,13 +1,10 @@
 package com.boukharist.mvarchi.info
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.boukharist.mvarchi.*
-import com.boukharist.mvarchi.form.FormViewModel
 import com.nhaarman.mockitokotlin2.capture
-import com.nhaarman.mockitokotlin2.doAnswer
 import com.nhaarman.mockitokotlin2.whenever
 import org.junit.Assert
 import org.junit.Before
@@ -40,7 +37,7 @@ class InfoViewModelTest {
     fun test_on_Api_changed_populate_right_user() {
         //GIVEN
         val mockLiveData = MutableLiveData(mockUser)
-        whenever(userApi.getUser()).thenReturn(mockLiveData)
+        whenever(userApi.getUserFlow()).thenReturn(mockLiveData)
         whenever(userApi.setUser(anyObject())).then {
             { mockLiveData.value = mockUser }
         }
